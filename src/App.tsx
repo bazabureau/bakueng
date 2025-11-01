@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { MotionConfig } from "motion/react";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { ChatAssistant } from "./components/ChatAssistant";
@@ -14,6 +15,24 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [currentProductId, setCurrentProductId] = useState<string | null>(null);
+  const [disableMotion, setDisableMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const updateMotionPreference = () => setDisableMotion(mediaQuery.matches);
+    updateMotionPreference();
+    mediaQuery.addEventListener("change", updateMotionPreference);
+    return () => mediaQuery.removeEventListener("change", updateMotionPreference);
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (disableMotion) {
+      root.classList.add("reduce-motion");
+    } else {
+      root.classList.remove("reduce-motion");
+    }
+  }, [disableMotion]);
 
   // Handle hash-based routing
   useEffect(() => {
@@ -195,14 +214,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header currentPage={currentPage} />
+    <MotionConfig reducedMotion={disableMotion ? "always" : "never"}>
+      <div className="min-h-screen bg-white">
+        <Header currentPage={currentPage} />
 
-      <main style={{ paddingTop: "var(--header-height, 120px)" }}>{renderPage()}</main>
+        <main style={{ paddingTop: "var(--header-height, 120px)" }}>{renderPage()}</main>
 
-      <Footer />
-      <ChatAssistant />
-      <Toaster />
-    </div>
+        <Footer />
+        <ChatAssistant />
+        <Toaster />
+      </div>
+    </MotionConfig>
   );
 }

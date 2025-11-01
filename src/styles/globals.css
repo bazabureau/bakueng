@@ -188,6 +188,17 @@ html {
   font-size: var(--font-size);
 }
 
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
 @layer utilities {
   .animate-logo-marquee {
     animation: logo-marquee 40s linear infinite;
