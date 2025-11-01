@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { CheckCircle2, Award, Users, Package } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -7,7 +7,7 @@ import { MechanicalGears } from "./MechanicalGears";
 import { BlueprintGrid } from "./BlueprintGrid";
 import { TechnicalScanline } from "./TechnicalScanline";
 import { MechanicalCounter } from "./MechanicalCounter";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const stats = [
   { icon: Package, value: "10+", label: "Years Experience" },
@@ -30,6 +30,8 @@ interface HeroProps {
 
 export function Hero({ heroImage }: HeroProps) {
   const ref = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [enableParallax, setEnableParallax] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -37,6 +39,19 @@ export function Hero({ heroImage }: HeroProps) {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setEnableParallax(false);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const update = () => setEnableParallax(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, [prefersReducedMotion]);
 
   return (
     <section
@@ -46,7 +61,7 @@ export function Hero({ heroImage }: HeroProps) {
     >
       {/* Parallax Background */}
       <motion.div
-        style={{ y }}
+        style={enableParallax ? { y } : undefined}
         className="absolute inset-0"
       >
         <ImageWithFallback
@@ -59,17 +74,17 @@ export function Hero({ heroImage }: HeroProps) {
       </motion.div>
 
       {/* Mechanical Gears Background */}
-      <MechanicalGears />
+      <MechanicalGears className="hidden md:block" />
 
       {/* Blueprint Grid */}
-      <BlueprintGrid />
+      <BlueprintGrid className="hidden md:block" />
 
       {/* Technical Scanline */}
-      <TechnicalScanline />
+      <TechnicalScanline className="hidden md:block" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
         <motion.div
-          style={{ opacity }}
+          style={enableParallax ? { opacity } : undefined}
           className="max-w-4xl"
         >
           {/* Badge Row */}

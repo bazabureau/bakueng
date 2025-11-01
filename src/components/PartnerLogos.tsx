@@ -37,6 +37,7 @@ const partners = Object.entries(logoModules)
 
 export function PartnerLogos() {
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: partners.length > 1,
     align: "start",
@@ -46,7 +47,15 @@ export function PartnerLogos() {
   });
 
   useEffect(() => {
-    if (!emblaApi || partners.length <= 1) {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi || partners.length <= 1 || isMobile) {
       return;
     }
 
@@ -67,7 +76,7 @@ export function PartnerLogos() {
     }, 3200);
 
     return () => window.clearInterval(autoplay);
-  }, [emblaApi, isPaused, partners.length]);
+  }, [emblaApi, isPaused, partners.length, isMobile]);
 
   useEffect(() => {
     if (!emblaApi) {
