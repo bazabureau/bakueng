@@ -1,22 +1,35 @@
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+
+import afchamberLogo from "../../partners/afchamber.png";
+import alstomLogo from "../../partners/alstom.png";
+import arkozSementLogo from "../../partners/arkoz-sement.png";
+import azalLogo from "../../partners/azal.png";
+import bakuSteelLogo from "../../partners/baku-steel.webp";
+import balaxaniLogo from "../../partners/balaxani.png";
+import caspianGeoLogo from "../../partners/caspian-geo.png";
+import glensolLogo from "../../partners/glensol.png";
+import hiltonLogo from "../../partners/hilton.png";
+import silkwayLogo from "../../partners/silkway-airlines.jpeg";
+import socarPolymerLogo from "../../partners/socar-polymer.svg";
+import technipLogo from "../../partners/technip-energies.png";
+import tekfenLogo from "../../partners/tekfen.png";
 
 const partners = [
-  { name: "SOCAR", category: "Oil & Gas" },
-  { name: "Alstom", category: "Energy" },
-  { name: "Wärtsilä", category: "Marine" },
-  { name: "Prokon", category: "Engineering" },
-  { name: "Glensol", category: "Energy" },
-  { name: "Azfen", category: "Construction" },
-  { name: "Tekfen", category: "Construction" },
-  { name: "Weir", category: "Industrial" },
-  { name: "Hilton", category: "Hospitality" },
-  { name: "Marriott", category: "Hospitality" },
-  { name: "Ritz-Carlton", category: "Hospitality" },
-  { name: "Boulevard", category: "Hotel" },
-  { name: "Sahdag", category: "Industrial" },
-  { name: "Grand Agro", category: "Agriculture" },
-  { name: "Importex", category: "Trading" },
+  { name: "AFChamber", category: "Trade & Industry", logo: afchamberLogo },
+  { name: "Alstom", category: "Energy & Transport", logo: alstomLogo },
+  { name: "Arkoz Sement", category: "Construction Materials", logo: arkozSementLogo },
+  { name: "AZAL", category: "Aviation", logo: azalLogo },
+  { name: "Baku Steel Company", category: "Steel Production", logo: bakuSteelLogo },
+  { name: "Balaxanı", category: "Waste Management", logo: balaxaniLogo },
+  { name: "Caspian Geo", category: "Engineering", logo: caspianGeoLogo },
+  { name: "Glensol", category: "Oil & Gas Services", logo: glensolLogo },
+  { name: "Hilton Baku", category: "Hospitality", logo: hiltonLogo },
+  { name: "Silk Way Airlines", category: "Cargo Aviation", logo: silkwayLogo },
+  { name: "SOCAR Polymer", category: "Petrochemicals", logo: socarPolymerLogo },
+  { name: "Technip Energies", category: "Engineering", logo: technipLogo },
+  { name: "Tekfen", category: "Construction", logo: tekfenLogo },
 ];
 
 export function PartnerLogos() {
@@ -64,20 +77,9 @@ export function PartnerLogos() {
 
           {/* Scrolling Container */}
           <div className="overflow-hidden">
-            <motion.div
-              className="flex gap-12 sm:gap-16 items-center"
-              animate={{
-                x: isPaused ? 0 : [0, -1920],
-              }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 40,
-                  ease: "linear",
-                },
-              }}
-              style={{ willChange: "transform" }}
+            <div
+              className="flex gap-12 sm:gap-16 items-center animate-logo-marquee"
+              style={{ animationPlayState: isPaused ? "paused" : "running" }}
             >
               {/* First set of logos */}
               {partners.map((partner, index) => (
@@ -91,7 +93,7 @@ export function PartnerLogos() {
               {partners.map((partner, index) => (
                 <PartnerLogo key={`partner-3-${index}`} partner={partner} />
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* Pause Indicator */}
@@ -143,36 +145,36 @@ export function PartnerLogos() {
 }
 
 interface PartnerLogoProps {
-  partner: { name: string; category: string };
+  partner: { name: string; category: string; logo: string };
 }
 
 function PartnerLogo({ partner }: PartnerLogoProps) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, y: -4 }}
-      transition={{ duration: 0.24 }}
-      className="flex-shrink-0 group"
-    >
+    <div className="flex-shrink-0 group transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
       <div className="w-40 h-24 bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col items-center justify-center p-6 hover:border-[#EB791B] hover:shadow-md transition-all duration-300 relative overflow-hidden">
         {/* Hover gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#EB791B]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        
+
         {/* Logo placeholder - company name in industrial font style */}
-        <div className="relative z-10 flex flex-col items-center gap-1">
-          <div className="text-[#1E1E1E] group-hover:text-[#EB791B] transition-colors text-2xl tracking-tight uppercase">
+        <div className="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <ImageWithFallback
+            src={partner.logo}
+            alt={`${partner.name} logo`}
+            className="max-h-10 w-full object-contain"
+          />
+          <div className="text-[#1E1E1E] group-hover:text-[#EB791B] transition-colors text-sm font-medium">
             {partner.name}
           </div>
           <div className="text-gray-400 text-xs uppercase tracking-wider">
             {partner.category}
           </div>
         </div>
-
         {/* Corner bolts decoration */}
         <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-[#EB791B] transition-colors" />
         <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-[#EB791B] transition-colors" />
         <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-[#EB791B] transition-colors" />
         <div className="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-[#EB791B] transition-colors" />
       </div>
-    </motion.div>
+    </div>
   );
 }

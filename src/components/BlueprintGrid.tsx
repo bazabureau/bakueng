@@ -1,5 +1,3 @@
-import { motion } from "motion/react";
-
 interface BlueprintGridProps {
   className?: string;
 }
@@ -34,32 +32,12 @@ export function BlueprintGrid({ className = "" }: BlueprintGridProps) {
       </svg>
 
       {/* Animated Technical Lines */}
-      <motion.div
-        className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent"
-        animate={{
-          scaleX: [0, 1, 1, 0],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          repeatDelay: 2,
-          ease: "easeInOut",
-        }}
+      <div
+        className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent animate-blueprint-line"
       />
-      <motion.div
-        className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent"
-        animate={{
-          scaleX: [0, 1, 1, 0],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          repeatDelay: 2,
-          delay: 1.5,
-          ease: "easeInOut",
-        }}
+      <div
+        className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent animate-blueprint-line"
+        style={{ animationDelay: "1.5s" }}
       />
     </div>
   );

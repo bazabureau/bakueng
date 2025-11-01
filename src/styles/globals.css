@@ -187,3 +187,102 @@
 html {
   font-size: var(--font-size);
 }
+
+@layer utilities {
+  .animate-logo-marquee {
+    animation: logo-marquee 40s linear infinite;
+    will-change: transform;
+  }
+
+  .animate-gear-slow {
+    animation: gear-spin 20s linear infinite;
+  }
+
+  .animate-gear-medium {
+    animation: gear-spin 15s linear infinite reverse;
+  }
+
+  .animate-gear-fast {
+    animation: gear-spin 10s linear infinite;
+  }
+
+  .animate-scanline {
+    animation: scanline-move 10s linear infinite;
+  }
+
+  .animate-blueprint-line {
+    animation: blueprint-line 3s ease-in-out infinite;
+    transform-origin: left center;
+  }
+
+  .animate-corner-fade {
+    animation: corner-fade 3s ease-in-out infinite;
+  }
+}
+
+@keyframes logo-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(-33.333%);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+@keyframes gear-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scanline-move {
+  0% {
+    transform: translateX(-10%);
+  }
+  70% {
+    transform: translateX(110%);
+  }
+  100% {
+    transform: translateX(110%);
+  }
+}
+
+@keyframes blueprint-line {
+  0%, 100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes corner-fade {
+  0%, 100% {
+    opacity: 0;
+  }
+  20%, 80% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-logo-marquee,
+  .animate-gear-slow,
+  .animate-gear-medium,
+  .animate-gear-fast,
+  .animate-scanline,
+  .animate-blueprint-line,
+  .animate-corner-fade {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -53,6 +53,7 @@ export function Hero({ heroImage }: HeroProps) {
           src={heroImage}
           alt="Industrial engineering facility"
           className="w-full h-full object-cover"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/85 to-gray-900/60" />
       </motion.div>
